@@ -2,11 +2,11 @@
 
 <table>
 <tr>
-<td>Package</td><td>vein</td>
+<td>Package</td><td>dermis</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>WebSocket RPC</td>
+<td>Sugar</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -14,137 +14,64 @@
 </tr>
 </table>
 
-## Example
+## Introduction
 
-### Server
+Dermis exists to provide an easy to use wrapper around routing and rendering. If you find yourself requesting data from the server then rendering it throughout your application dermis can help clean up your workflow.
+
+## Includes
+
+Dermis itself is tiny but comes with great tools baked in. These include RequireJS, SockJS, Vein, jQuery, Jade, and more. A more diverse selection of builds will be available soon to help customize your stack - right now everything you need to get an app off the ground is included by default.
+
+## Routing
+
+Passing a single route to dermis will automatically load routes/(base) and routes/(template) when triggered.
 
 ```javascript
-var Vein = require('vein');
-var server = http.createServer().listen(8080);
-var rpc = new Vein(server);
-
-rpc.add('greetings', function (send, socket, first, last){
-  send("Hey there " + first + " " + last!");
+require(["dermis"], function (dermis) {
+  // This will load routes/test.js and templates/test.js
+  dermis.route('/test/:id');
 });
 ```
 
-### Client
+You can also pass functions as your second and third arguments.
 
 ```javascript
-var vein = new Vein();
-vein.ready(function (){
-  vein.greetings("John", "Foobar", function (res){
-     // res === "Hey there John Foobar!"
-    console.log(res);
-  });
+require(["dermis"], function (dermis) {
+  dermis.route('/test/:id', require('tasks/runtest'), require('tmpl/rendertest'));
 });
 ```
 
-## Usage
+## Structure
 
-Documentation is horrible. Will update later.
+#### routes/test.js
 
-### Server
+Your route function will receive two arguments. The first argument is an object that contains the parameters from your route - the second argument is your template/render/view/secondary function.
+
 ```javascript
-var http = require('http');
-var Vein = require('vein');
-var server = http.createServer().listen(8080);
-
-var vein = new Vein(server, {
-  //options go here
-});
-/*
-  Valid options:
-  prefix - vein endpoint (default: "vein")
-  sessionName - cookie name (default: "VEINSESSID-[prefix]")
-  noTrack - disable pubsub for performance (default: false)
-  response_limit - reopen socket after this much data (default: 128k)
-*/
-
-// A service is a function that gets called every time a client calls it
-// The format is function (send, socket, args...)
-// args can be any JSON-friendly data sent from the client
-// You can pass any JSON-friendly objects as arguments to the send
-// and they will be applied to the callback on the client.
-vein.add('someService', function (send, socket, name, num) {
-  send("Hey there " + name + " I got your number " + num);
-});
-
-// The server can assign a session to the client via send.session.
-// Any services called will have access to the session value via socket.session
-// This session will persist between page loads/connects based on your settings
-// send.session is a simple way to set a tracking cookie not a session store
-vein.add('login', function (send, socket, username, password) {
-  if (username === 'username' && password === 'pass123') {
-    send.session('success! (some unique key)');
-    send(); // Call the login callback with no error
-  } else {
-    send('Invalid username or password');
+define(function () {
+  return function (args, templ) {
+    $('#test').html(templ({
+      user: "choni"
+    }));
   }
 });
-
-// If you have tracking enabled (noTrack=false) you can use send.all
-// to broadcast a message to all currently connected clients that are subscribed to the service
-// A hash of clients is available in vein.clients
-vein.add('someOtherService', function (send, socket, msg) {
-  send.all(msg);
-});
 ```
 
-### Browser Client
+#### templates/test.js
+
+Your template function will receive any arguments that were passed in from your route function. Your template files MUST be valid AMD modules. If you use jade templates have a look at [jaded](https://github.com/wearefractal/jaded) which will compile your templates to AMD modules.
 
 ```javascript
-var vein = new Vein({
-  //options go here
-});
-/*
-  Valid options:
-  host - server running vein (default: location.origin)
-  prefix - vein endpoint (default: "vein")
-  sessionName - cookie name (default: "VEINSESSID-[prefix]")
-  sessionLength - time before cookie expires (default: session)
-  debug - extra information (default: false)
-*/
-
-//When the vein is ready this function will be called
-vein.ready(function (services) {
-  // services is an array of service names available to use
-  // Any code using vein should be kicked off here
-  // When calling a service the format is vein.<service name>(args..., callback)
-  // You can pass any JSON-friendly objects as arguments and they will be applied to the
-  // service on the server.
-  vein.someService('john', 2, function (err, result) {
-    console.log(result);
-  });
-
-  // Prefixing a service with .subscribe allows the server to send unsolicited messages
-  // to the client. Subscribing to a service does not communicate to the server in any way.
-  vein.subscribe.someOtherService(function (message) {
-    console.log(message);
-  });
-
-  // When the server assigns a session it is saved as a cookie with the client preferences.
-  // Make sure the client and server cookie preferences match.
-  // Session data can be accessed via .getSession() and .clearSession()
-  vein.login('username', 'pass123', function (err) {
-    if (err) {
-      alert(err);
-    } else {
-      console.log(vein.getSession());
-      console.log(vein.clearSession());
-    }
-  });
-});
-
-//If the vein is closed this function will be called
-vein.close(function () {
-  console.log("Connection lost!");
+define(function () {
+  return function (args) {
+    return "User" + args.user + " triggered this!";
+  }
 });
 ```
 
-## More Examples
+## Examples
 
-You can view a web-based chat example in the [example folder.](https://github.com/wearefractal/vein/tree/master/examples)
+You can see examples in the [example folder.](https://github.com/wearefractal/dermis/tree/master/examples)
 
 ## LICENSE
 
