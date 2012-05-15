@@ -1,0 +1,17 @@
+coffee -j dermis.js -c deps/jade.coffee src/dermis.coffee
+
+# Prepend deps
+#cat deps/vein.js | cat - dermis.js > /tmp/out && mv /tmp/out dermis.js
+#cat deps/sockjs.js | cat - dermis.js > /tmp/out && mv /tmp/out dermis.js
+cat deps/jquery.routes.js | cat - dermis.js > /tmp/out && mv /tmp/out dermis.js
+cat deps/jquery.js | cat - dermis.js > /tmp/out && mv /tmp/out dermis.js
+cat deps/require.js | cat - dermis.js > /tmp/out && mv /tmp/out dermis.js
+
+# Minify
+uglifyjs -nc --unsafe -mt -o dermis.min.js dermis.js
+echo "File size (minified): " && cat dermis.min.js | wc -c
+echo "File size (gzipped): " && cat dermis.min.js | gzip -9f  | wc -c
+
+# Examples stuff
+cp dermis.js examples/dermis.js
+cp dermis.min.js examples/dermis.min.js
