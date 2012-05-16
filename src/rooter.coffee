@@ -57,15 +57,12 @@ rooter =
     (d.fn.apply null, m[1..] if m = d.pattern.exec hash) for r, d of rooter.routes
     return
 
-if window? # browser
-  if typeof window.onhashchange isnt 'undefined'
-    console.log 'event'
-    rooter.hash = hash
-    window.onhashchange = -> rooter.hash.trigger rooter.hash.value()
-  else
-    console.log 'timer'
-    rooter.hash = hashTimer
-    setTimeout rooter.hash.check, 100
-  window.rooter = rooter
-else if module? # node
-  module.exports = rooter
+if typeof window.onhashchange isnt 'undefined'
+  console.log 'event'
+  rooter.hash = hash
+  window.onhashchange = -> rooter.hash.trigger rooter.hash.value()
+else
+  console.log 'timer'
+  rooter.hash = hashTimer
+  setTimeout rooter.hash.check, 100
+window.rooter = rooter

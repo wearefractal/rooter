@@ -5,8 +5,5 @@ uglifyjs -nc --unsafe -mt -o rooter.min.js rooter.js
 echo "File size (minified): " && cat rooter.min.js | wc -c
 echo "File size (gzipped): " && cat rooter.min.js | gzip -9f  | wc -c
 
-# Test
-mocha --compilers coffee:coffee-script
-
 # Copy to example folder
 cp rooter.js example

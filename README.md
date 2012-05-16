@@ -11,7 +11,7 @@
 </tr>
 <tr>
 <td>Size</td>
-<td>1500 bytes</td>
+<td>1.3K</td>
 </tr>
 </table>
 
