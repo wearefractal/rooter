@@ -35,10 +35,10 @@ rooter.hash.listen(function(hash){
 });
 
 //Change the hash
-rooter.hash.hash('/test/20');
+rooter.hash.value('/test/20');
 
 //Get the current hash
-rooter.hash.hash();
+rooter.hash.value();
 
 //Manually trigger hash event
 rooter.hash.trigger('/test/10');

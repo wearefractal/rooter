@@ -10,7 +10,7 @@
     trigger: function(hash) {
       var fn, _i, _len, _ref;
       if (hash == null) {
-        hash = rooter.hash.hash();
+        hash = rooter.hash.value();
       }
       if (hash === "") {
         hash = "/";
@@ -21,7 +21,7 @@
         fn(hash);
       }
     },
-    hash: function(h) {
+    value: function(h) {
       if (h) {
         window.location.hash = h;
       }
@@ -37,7 +37,7 @@
     trigger: function(hash) {
       var fn, _i, _len, _ref;
       if (hash == null) {
-        hash = rooter.hash.hash();
+        hash = rooter.hash.value();
       }
       if (hash === "") {
         hash = "/";
@@ -48,7 +48,7 @@
         fn(hash);
       }
     },
-    hash: function(h) {
+    value: function(h) {
       if (h) {
         rooter.hash.lastHash = h;
         window.location.hash = h;
@@ -58,7 +58,7 @@
     lastHash: null,
     check: function() {
       var currHash;
-      currHash = rooter.hash.hash();
+      currHash = rooter.hash.value();
       if (currHash !== rooter.hash.lastHash) {
         rooter.hash.lastHash = currHash;
         rooter.hash.trigger(currHash);
@@ -102,7 +102,7 @@
       console.log('event');
       rooter.hash = hash;
       window.onhashchange = function() {
-        return rooter.hash.trigger(rooter.hash.hash());
+        return rooter.hash.trigger(rooter.hash.value());
       };
     } else {
       console.log('timer');

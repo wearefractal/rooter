@@ -2,11 +2,11 @@
 hash =
   listeners: []
   listen: (fn) -> rooter.hash.listeners.push fn
-  trigger: (hash=rooter.hash.hash()) ->
+  trigger: (hash=rooter.hash.value()) ->
     hash = "/" if hash is ""
     fn hash for fn in rooter.hash.listeners
     return
-  hash: (h) ->
+  value: (h) ->
     if h
       window.location.hash = h
     return window.location.hash.replace '#', ''
@@ -14,11 +14,11 @@ hash =
 hashTimer =
   listeners: []
   listen: (fn) -> rooter.hash.listeners.push fn
-  trigger: (hash=rooter.hash.hash()) ->
+  trigger: (hash=rooter.hash.value()) ->
     hash = "/" if hash is ""
     fn hash for fn in rooter.hash.listeners
     return
-  hash: (h) ->
+  value: (h) ->
     if h
       rooter.hash.lastHash = h
       window.location.hash = h
@@ -26,7 +26,7 @@ hashTimer =
 
   lastHash: null
   check: ->
-    currHash = rooter.hash.hash()
+    currHash = rooter.hash.value()
     if currHash isnt rooter.hash.lastHash
       rooter.hash.lastHash = currHash
       rooter.hash.trigger currHash
@@ -61,7 +61,7 @@ if window? # browser
   if typeof window.onhashchange isnt 'undefined'
     console.log 'event'
     rooter.hash = hash
-    window.onhashchange = -> rooter.hash.trigger rooter.hash.hash()
+    window.onhashchange = -> rooter.hash.trigger rooter.hash.value()
   else
     console.log 'timer'
     rooter.hash = hashTimer
