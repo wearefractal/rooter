@@ -79,19 +79,29 @@
     route: function(expr, fn) {
       var pattern;
       pattern = "^" + expr + "$";
-      pattern = pattern.replace(/([?=,\/])/g, '\\$1').replace(/:([\w\d]+)/g, '([^/]*)').replace(/\*([\w\d]+)/g, '(.*?)');
+      pattern = pattern.replace(/([?=,\/])/g, '\\$1').replace(/:([\w\d]+)/g, '([^/]*)');
       rooter.routes[expr] = {
+        names: expr.match(/:([\w\d]+)/g),
         pattern: new RegExp(pattern),
         fn: fn
       };
     },
     test: function(hash) {
-      var d, m, r, _ref;
+      var args, d, idx, m, name, o, r, _i, _len, _ref, _ref1;
       _ref = rooter.routes;
       for (r in _ref) {
         d = _ref[r];
         if (m = d.pattern.exec(hash)) {
-          d.fn.apply(null, m.slice(1));
+          o = {};
+          if (d.names) {
+            args = m.slice(1);
+            _ref1 = d.names;
+            for (idx = _i = 0, _len = _ref1.length; _i < _len; idx = ++_i) {
+              name = _ref1[idx];
+              o[name.substring(1)] = args[idx];
+            }
+          }
+          d.fn(o);
         }
       }
     }

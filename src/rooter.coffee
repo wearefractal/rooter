@@ -46,15 +46,22 @@ rooter =
     pattern = pattern
       .replace(/([?=,\/])/g, '\\$1') # escape
       .replace(/:([\w\d]+)/g, '([^/]*)') # name
-      .replace(/\*([\w\d]+)/g, '(.*?)') # splat
+      #.replace(/\*([\w\d]+)/g, '(.*?)') # splat
 
     rooter.routes[expr] =
+      names: expr.match /:([\w\d]+)/g
       pattern: new RegExp pattern
       fn: fn
     return
 
   test: (hash) ->
-    (d.fn.apply null, m[1..] if m = d.pattern.exec hash) for r, d of rooter.routes
+    for r, d of rooter.routes
+      if m = d.pattern.exec hash
+        o = {}
+        if d.names
+          args = m[1..]
+          o[name.substring(1)] = args[idx] for name, idx in d.names
+        d.fn o
     return
 
 if typeof window.onhashchange isnt 'undefined'

@@ -19,8 +19,8 @@
         rooter.route('/', function(){
           console.log("index");
         });
-        rooter.route('/test/:id', function(id){
-          console.log("Test ID " + id);
+        rooter.route('/test/:id', function(args){
+          console.log("Test ID " + args.id);
         });
         rooter.init();
       </script>
