@@ -2,11 +2,16 @@
 
 <table>
 <tr>
-<td>Package</td><td>rooter</td>
+<td>Package</td>
+<td>rooter</td>
 </tr>
 <tr>
 <td>Description</td>
 <td>Tiny cross-platform hashchange/routing</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>1500 bytes</td>
 </tr>
 </table>
 
