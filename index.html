@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Rooter by wearefractal</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Rooter</h1>
+        <h2>Tiny cross-platform hashchange/routing for the browser</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/wearefractal/rooter/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/wearefractal/rooter/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/wearefractal/rooter" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2>Information</h2>
+
+<table>
+<tr>
+<td>Package</td>
+<td>rooter</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Tiny cross-platform hashchange/routing</td>
+</tr>
+</table><h2>Usage</h2>
+
+<h3>Route</h3>
+
+<div class="highlight">
+<pre><span class="c1">// Create routes</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"index"</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/test/:id'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">//Intiailize</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</pre>
+</div>
+
+
+<h3>Hash</h3>
+
+<div class="highlight">
+<pre><span class="nx">rooter</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">hash</span><span class="p">){</span>
+  <span class="c1">//Do something with the new hash</span>
+<span class="p">});</span>
+
+<span class="c1">//Change the hash</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span><span class="s1">'/test/20'</span><span class="p">);</span>
+
+<span class="c1">//Get the current hash</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">value</span><span class="p">();</span>
+
+<span class="c1">//Manually trigger hash event</span>
+<span class="nx">rooter</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'/test/10'</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<h2>LICENSE</h2>
+
+<p>(MIT License)</p>
+
+<p>Copyright (c) 2012 Fractal <a href="mailto:contact@wearefractal.com">contact@wearefractal.com</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
