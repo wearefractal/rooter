@@ -2,76 +2,47 @@
 
 <table>
 <tr>
-<td>Package</td><td>dermis</td>
+<td>Package</td><td>rooter</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>Sugar</td>
-</tr>
-<tr>
-<td>Node Version</td>
-<td>>= 0.4</td>
+<td>Tiny cross-platform hashchange/routing</td>
 </tr>
 </table>
 
-## Introduction
+## Usage
 
-Dermis exists to provide an easy to use wrapper around routing and rendering. If you find yourself requesting data from the server then rendering it throughout your application dermis can help clean up your workflow.
-
-## Includes
-
-Dermis itself is tiny but comes with great tools baked in. These include RequireJS, SockJS, Vein, jQuery, Jade, and more. A more diverse selection of builds will be available soon to help customize your stack - right now everything you need to get an app off the ground is included by default.
-
-## Routing
-
-Passing a single route to dermis will automatically load routes/(base) and routes/(template) when triggered.
+### Route
 
 ```javascript
-require(["dermis"], function (dermis) {
-  // This will load routes/test.js and templates/test.js
-  dermis.route('/test/:id');
+// Create routes
+rooter.route('/', function(){
+  console.log("index");
 });
+rooter.route('/test/:id', function(args){
+  console.log(args.id);
+});
+
+//Intiailize
+rooter.init();
 ```
 
-You can also pass functions as your second and third arguments.
+### Hash
 
 ```javascript
-require(["dermis"], function (dermis) {
-  dermis.route('/test/:id', require('tasks/runtest'), require('tmpl/rendertest'));
+rooter.hash.listen(function(hash){
+  //Do something with the new hash
 });
+
+//Change the hash
+rooter.hash.hash('/test/20');
+
+//Get the current hash
+rooter.hash.hash();
+
+//Manually trigger hash event
+rooter.hash.trigger('/test/10');
 ```
-
-## Structure
-
-#### routes/test.js
-
-Your route function will receive two arguments. The first argument is an object that contains the parameters from your route - the second argument is your template/render/view/secondary function.
-
-```javascript
-define(function () {
-  return function (args, templ) {
-    $('#test').html(templ({
-      user: "choni"
-    }));
-  }
-});
-```
-
-#### templates/test.js
-
-Your template function will receive any arguments that were passed in from your route function. Your template files MUST be valid AMD modules. If you use jade templates have a look at [jaded](https://github.com/wearefractal/jaded) which will compile your templates to AMD modules.
-
-```javascript
-define(function () {
-  return function (args) {
-    return "User" + args.user + " triggered this!";
-  }
-});
-```
-
-## Examples
-
-You can see examples in the [example folder.](https://github.com/wearefractal/dermis/tree/master/examples)
 
 ## LICENSE
 

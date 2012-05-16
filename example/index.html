@@ -10,12 +10,24 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-      <script src="dermis.js"></script>
-      <script src="test.js"></script>
+      <script src="rooter.js"></script>
+      <script>
+        rooter.hash.listen(function(hash){
+          console.log(hash);
+        });
+
+        rooter.route('/', function(){
+          console.log("index");
+        });
+        rooter.route('/test/:id', function(id){
+          console.log("Test ID " + id);
+        });
+        rooter.init();
+      </script>
    </head>
 
    <body>
-    <p id="testi">Test</p>
+    <p>Test</p>
     <a href="#/test/1">Trigger</a>
    </body>
 </html>
