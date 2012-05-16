@@ -58,11 +58,9 @@ rooter =
     return
 
 if typeof window.onhashchange isnt 'undefined'
-  console.log 'event'
   rooter.hash = hash
   window.onhashchange = -> rooter.hash.trigger rooter.hash.value()
 else
-  console.log 'timer'
   rooter.hash = hashTimer
   setTimeout rooter.hash.check, 100
 window.rooter = rooter

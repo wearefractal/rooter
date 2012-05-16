@@ -98,13 +98,11 @@
   };
 
   if (typeof window.onhashchange !== 'undefined') {
-    console.log('event');
     rooter.hash = hash;
     window.onhashchange = function() {
       return rooter.hash.trigger(rooter.hash.value());
     };
   } else {
-    console.log('timer');
     rooter.hash = hashTimer;
     setTimeout(rooter.hash.check, 100);
   }
