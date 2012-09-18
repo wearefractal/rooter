@@ -41,6 +41,7 @@ rooter =
     rooter.hash.trigger()
 
   routes: {}
+  lastMatch: null
   route: (expr, fn) ->
     pattern = "^#{expr}$"
     pattern = pattern
@@ -57,6 +58,7 @@ rooter =
   test: (hash) ->
     for r, d of rooter.routes
       if m = d.pattern.exec hash
+        rooter.lastMatch = r
         o = {}
         if d.names
           args = m[1..]
