@@ -34,6 +34,7 @@ hashTimer =
     return
 
 rooter =
+  history: []
   # Routing
   init: ->
     rooter.hash.listen rooter.test
@@ -59,6 +60,7 @@ rooter =
     for r, d of rooter.routes
       if m = d.pattern.exec hash
         rooter.lastMatch = r
+        rooter.history.push r
         o = {}
         if d.names
           args = m[1..]

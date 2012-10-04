@@ -68,6 +68,7 @@
   };
 
   rooter = {
+    history: [],
     init: function() {
       rooter.hash.listen(rooter.test);
       if (rooter.hash.check) {
@@ -94,6 +95,7 @@
         d = _ref[r];
         if (m = d.pattern.exec(hash)) {
           rooter.lastMatch = r;
+          rooter.history.push(r);
           o = {};
           if (d.names) {
             args = m.slice(1);
