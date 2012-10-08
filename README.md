@@ -11,7 +11,7 @@
 </tr>
 <tr>
 <td>Size</td>
-<td>1.3K</td>
+<td>1.8K</td>
 </tr>
 </table>
 
@@ -28,8 +28,6 @@ rooter.route('/test/:id', function(args){
   console.log(args.id);
 });
 
-//Intiailize
-rooter.init();
 ```
 
 ### Hash

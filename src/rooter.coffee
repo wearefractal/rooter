@@ -1,9 +1,11 @@
 # Hash events
 hash =
+  lastHash: null
   listeners: []
   listen: (fn) -> rooter.hash.listeners.push fn
   trigger: (hash=rooter.hash.value()) ->
     hash = "/" if hash is ""
+    rooter.hash.lastHash = hash
     fn hash for fn in rooter.hash.listeners
     return
   value: (h) ->
@@ -11,38 +13,23 @@ hash =
       window.location.hash = h
     return window.location.hash.replace '#', ''
 
-hashTimer =
-  listeners: []
-  listen: (fn) -> rooter.hash.listeners.push fn
-  trigger: (hash=rooter.hash.value()) ->
-    hash = "/" if hash is ""
-    fn hash for fn in rooter.hash.listeners
-    return
-  value: (h) ->
+hashTimer = {}
+hashTimer extends hash
+hashTimer.value = (h) ->
     if h
       rooter.hash.lastHash = h
       window.location.hash = h
     return window.location.hash.replace '#', ''
-
-  lastHash: null
-  check: ->
+hashTimer.check = ->
     currHash = rooter.hash.value()
-    if currHash isnt rooter.hash.lastHash
-      rooter.hash.lastHash = currHash
-      rooter.hash.trigger currHash
+    rooter.hash.trigger currHash if currHash isnt rooter.hash.lastHash
     setTimeout rooter.hash.check, 100
     return
 
 rooter =
-  history: []
-  # Routing
-  init: ->
-    rooter.hash.listen rooter.test
-    return rooter.hash.check() if rooter.hash.check
-    rooter.hash.trigger()
-
-  routes: {}
   lastMatch: null
+
+  routes: []
   route: (expr, fn) ->
     pattern = "^#{expr}$"
     pattern = pattern
@@ -50,22 +37,34 @@ rooter =
       .replace(/:([\w\d]+)/g, '([^/]*)') # name
       #.replace(/\*([\w\d]+)/g, '(.*?)') # splat
 
-    rooter.routes[expr] =
+    base = (if expr is '/' then 'index' else /\/(.*?)\//.exec(expr)?[1] or /\/(.*)/.exec(expr)?[1])
+    o =
+      route: expr
       names: expr.match /:([\w\d]+)/g
       pattern: new RegExp pattern
+      base: base
       fn: fn
+    rooter.routes.push o
+
+    currHash = rooter.hash.value()
+    rooter.triggerMatch currHash, o if rooter.isMatch currHash, o
+    return rooter
+
+  isMatch: (hash, r) -> r.pattern.exec(hash)?
+  triggerMatch: (hash, r) ->
+    rooter.lastMatch = hash
+    o = {}
+    if r.names
+      args = r.pattern.exec(hash)[1..]
+      o[name.substring(1)] = args[idx] for name, idx in r.names
+    r.fn o
     return
 
+  matches: (hash) -> (r for r in rooter.routes when rooter.isMatch hash, r)
   test: (hash) ->
-    for r, d of rooter.routes
-      if m = d.pattern.exec hash
-        rooter.lastMatch = r
-        rooter.history.push r
-        o = {}
-        if d.names
-          args = m[1..]
-          o[name.substring(1)] = args[idx] for name, idx in d.names
-        d.fn o
+    matches = rooter.matches hash
+    return unless matches.length > 0
+    rooter.triggerMatch hash, match for match in matches
     return
 
 if typeof window.onhashchange isnt 'undefined'
@@ -74,4 +73,9 @@ if typeof window.onhashchange isnt 'undefined'
 else
   rooter.hash = hashTimer
   setTimeout rooter.hash.check, 100
+
+# start listening
+rooter.hash.listen rooter.test
+rooter.hash.check() if rooter.hash.check
+
 window.rooter = rooter
