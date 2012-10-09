@@ -4,14 +4,15 @@ hash =
   listeners: []
   listen: (fn) -> rooter.hash.listeners.push fn
   trigger: (hash=rooter.hash.value()) ->
-    hash = "/" if hash is ""
     rooter.hash.lastHash = hash
     fn hash for fn in rooter.hash.listeners
     return
   value: (h) ->
     if h
       window.location.hash = h
-    return window.location.hash.replace '#', ''
+    hash = window.location.hash.replace '#', ''
+    hash = "/" if hash is ""
+    return hash
 
 hashTimer = {}
 hashTimer extends hash
@@ -37,12 +38,10 @@ rooter =
       .replace(/:([\w\d]+)/g, '([^/]*)') # name
       #.replace(/\*([\w\d]+)/g, '(.*?)') # splat
 
-    base = (if expr is '/' then 'index' else /\/(.*?)\//.exec(expr)?[1] or /\/(.*)/.exec(expr)?[1])
     o =
       route: expr
       names: expr.match /:([\w\d]+)/g
       pattern: new RegExp pattern
-      base: base
       fn: fn
     rooter.routes.push o
 

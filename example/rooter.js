@@ -15,9 +15,6 @@
       if (hash == null) {
         hash = rooter.hash.value();
       }
-      if (hash === "") {
-        hash = "/";
-      }
       rooter.hash.lastHash = hash;
       _ref = rooter.hash.listeners;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -29,7 +26,11 @@
       if (h) {
         window.location.hash = h;
       }
-      return window.location.hash.replace('#', '');
+      hash = window.location.hash.replace('#', '');
+      if (hash === "") {
+        hash = "/";
+      }
+      return hash;
     }
   };
 
@@ -58,15 +59,13 @@
     lastMatch: null,
     routes: [],
     route: function(expr, fn) {
-      var base, currHash, o, pattern, _ref, _ref1;
+      var currHash, o, pattern;
       pattern = "^" + expr + "$";
       pattern = pattern.replace(/([?=,\/])/g, '\\$1').replace(/:([\w\d]+)/g, '([^/]*)');
-      base = (expr === '/' ? 'index' : ((_ref = /\/(.*?)\//.exec(expr)) != null ? _ref[1] : void 0) || ((_ref1 = /\/(.*)/.exec(expr)) != null ? _ref1[1] : void 0));
       o = {
         route: expr,
         names: expr.match(/:([\w\d]+)/g),
         pattern: new RegExp(pattern),
-        base: base,
         fn: fn
       };
       rooter.routes.push(o);
